@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+export JBANG_RUNTIME_SHELL=bash
+export JBANG_STDIN_NOTTY=$([ -t 0 ] && echo "false" || echo "true")
+export JBANG_LAUNCH_CMD=$0
+export JBANG_PATH=$(dirname $0)
+output=$(CLICOLOR_FORCE=1 $JBANG_PATH/jbang-native "$@")
+err=$?
+if [ $err -eq 255 ]; then
+  eval "exec $output"
+elif [ -n "$output" ]; then
+  echo "$output"
+  exit $err
+else
+  exit $err
+fi
